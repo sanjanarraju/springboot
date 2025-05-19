@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User List</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 60%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f2f2f2; }
+        form { margin-bottom: 1em; }
+    </style>
+</head>
+<body>
+    <h2>List of Users</h2>
+    <form id="userForm" onsubmit="addUser(event)">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phoneNumber" placeholder="Phone Number" required>
+        <button type="submit">Add User</button>
+    </form>
+    <table id="usersTable" style="margin-top: 1em; display: none;">
+        <thead>
+            <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone Number</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        function loadUsers() {
+            fetch('/api/users')
+                .then(response => response.json())
+                .then(users => {
+                    const table = document.getElementById('usersTable');
+                    const tbody = table.querySelector('tbody');
+                    tbody.innerHTML = '';
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${user.id}</td><td>${user.name}</td><td>${user.email}</td><td>${user.phoneNumber}</td>`;
+                        tbody.appendChild(row);
+                    });
+                    table.style.display = users.length ? '' : 'none';
+                })
+                .catch(err => alert('Failed to load users: ' + err));
+        }
+
+        function addUser(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            fetch('/api/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phoneNumber })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to add user');
+                return response.json();
+            })
+            .then(user => {
+                document.getElementById('userForm').reset();
+                loadUsers();
+            })
+            .catch(err => alert(err));
+        }
+
+        window.onload = loadUsers;
+    </script>
+</body>
+</html>

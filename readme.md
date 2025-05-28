@@ -1,7 +1,16 @@
-maven:
-mvn spring-boot:run
+## About
+A minimal Spring Boot application that provides a REST API to list contacts with their name, email, and phone number.
 
-http://localhost:8080/
+## Setup
+1. Build the Project using Maven
+
+   mvn clean install
+3. Run the App
+
+   mvn spring-boot:run
+5. API available on
+
+   http://localhost:8080
 
 
 

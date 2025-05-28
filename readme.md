@@ -12,6 +12,13 @@ A minimal Spring Boot application that provides a REST API to list contacts with
 
    http://localhost:8080
 
+## Features
+List all contacts (GET)
+
+Add a new contact (POST)
+
+Retrieve a contact by ID (GET)
+
 
 
 <img width="1560" alt="Screenshot 2025-05-18 at 2 02 05 PM" src="https://github.com/user-attachments/assets/63b8458d-c947-4f8e-baca-aee08cf4ce1f" />
